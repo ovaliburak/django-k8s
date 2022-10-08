@@ -1,25 +1,26 @@
 version: "3"
 services:
-  web:
-    depends_on:
-      - postgres_db
-    #this build meaning is what container do i want to build here
-    build:
-      context: ./web
-      dockerfile: Dockerfile
-    image: django_ks8:v1
-    environment:
-      - PORT=8020
-    env_file:
-      - web/.env
-    ports:
-      - "8001:8020"
-    command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
-    volumes:
-      - staticfiles:/app/staticfiles/
+  # web:
+  #   depends_on:
+  #     - postgres_db
+  #   #this build meaning is what container do i want to build here
+  #   build:
+  #     context: ./web
+  #     dockerfile: Dockerfile
+  #   image: django_ks8:v1
+  #   environment:
+  #     - PORT=8020
+  #   env_file:
+  #     - web/.env
+  #   ports:
+  #     - "8001:8020"
+  #   command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
+  #   volumes:
+  #     - staticfiles:/app/staticfiles/
   postgres_db:
   #this postgres_db match up to POSTGRES_HOST variable in .env
     image: postgres
+    restart: always
     # environment:
     ##HARDCODED
     #   - POSTGRES_DB=dockerdc
@@ -48,7 +49,7 @@ services:
       - redis_data:/data
     entrypoint: redis-server --appendonly yes --port 6380
 volumes:
-  staticfiles:
-    external: true
+  # staticfiles:
+  #   external: true
   postgres_data:
   redis_data: 
