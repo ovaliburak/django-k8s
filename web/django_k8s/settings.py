@@ -74,19 +74,19 @@ WSGI_APPLICATION = 'django_k8s.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 #DECLARE DATABASE VARIABLES 
 DB_USERNAME = os.environ.get("POSTGRES_USER")
 DB_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
-DB_DATABASE = os.environ.get("POSTGRES_PASSWORD")
-DB_HOST = os.environ.get("POSTGRES_PASSWORD")
-DB_PORT = os.environ.get("POSTGRES_PASSWORD")
+DB_DATABASE = os.environ.get("POSTGRES_DB")
+DB_HOST = os.environ.get("POSTGRES_HOST")
+DB_PORT = os.environ.get("POSTGRES_PORT")
 DB_IS_AVAILABLE = all([
     DB_USERNAME,
     DB_PASSWORD,
@@ -94,9 +94,9 @@ DB_IS_AVAILABLE = all([
     DB_HOST,
     DB_PORT
 ])
-POSTGRES_READY=str(os.environ.get("POSTGRES_READY")) == '1'
+# POSTGRES_READY=str(os.environ.get("POSTGRES_READY")) == '1'
 
-if DB_IS_AVAILABLE and POSTGRES_READY:
+if DB_IS_AVAILABLE:
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
