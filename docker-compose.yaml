@@ -25,10 +25,9 @@ services:
     ##HARDCODED
     #   - POSTGRES_DB=dockerdc
     #   - POSTGRES_PASSWORD=mysecretpassword
-    #   - POSTGRES_USER=myuser
+    #   - POSTGRES_USER= ==
     #   - POSTGRES_HOST=postgres_db
     #   - POSTGRES_PORT=5432
-    # command: -p PORT if port is not default must be declared this line
     command: -p 5438
     env_file:
       - ./web/.env
@@ -44,7 +43,7 @@ services:
     expose:
       - 6380
     ports:
-      - "6380-6380"
+      - "6380:6380"
     volumes:
       - redis_data:/data
     entrypoint: redis-server --appendonly yes --port 6380
