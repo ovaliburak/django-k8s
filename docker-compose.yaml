@@ -51,4 +51,4 @@ volumes:
   # staticfiles:
   #   external: true
   postgres_data:
-  redis_data: 
+  redis_data:

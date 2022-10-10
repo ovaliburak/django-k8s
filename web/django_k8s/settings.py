@@ -96,6 +96,8 @@ DB_IS_AVAILABLE = all([
 ])
 # POSTGRES_READY=str(os.environ.get("POSTGRES_READY")) == '1'
 
+DB_IGNORE_SSL=os.environ.get('DB_IGNORE_SSL') == "true"
+
 if DB_IS_AVAILABLE:
     DATABASES = {
     'default': {
@@ -107,7 +109,11 @@ if DB_IS_AVAILABLE:
         'PORT': DB_PORT,
     }
 }
-    
+
+    if not DB_IGNORE_SSL:
+        DATABASES["default"]["OPTIONS"]= {
+            "sslmode":"required"
+        }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
