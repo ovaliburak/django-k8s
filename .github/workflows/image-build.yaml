@@ -1,0 +1,19 @@
+name: Build Docker Container and Push to Docher Hub
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test_django:
+    uses: ovaliburak/django-k8s/.github/workflows/test-django.yaml@main
+  docker_build:    
+    runs-on: ubuntu-latest
+    env:
+      DJANGO_SECRET_KEY: test-key-change-later
+    steps:
+    - uses: actions/checkout@v3
