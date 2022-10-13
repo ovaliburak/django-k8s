@@ -9,11 +9,34 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build:    
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./web
-    runs-on: ubuntu-latest
+    env:
+      DJANGO_SECRET_KEY: test-key-change-later
+      POSTGRES_DB: kubernetes_django
+      POSTGRES_USER: django_test
+      POSTGRES_PASSWORD: djangotestpassword
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+    services:
+      postgres_db:
+        image: postgres
+        env:
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_HOST: ${{ env.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ env.POSTGRES_PORT }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     strategy:
       max-parallel: 4
       matrix:
