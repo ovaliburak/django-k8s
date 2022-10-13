@@ -16,17 +16,17 @@ spec:
     spec:
       containers:
       - name: django-k8s-web
-        image: docker.io/burakovali/django-k8s:latest
-        # resources:
-        #   requests:
-        #     memory: "128Mi"
-        #     cpu: "1"
-        #   limits:
-        #     memory: "256Mi"
-        #     cpu: "1"
-        # envFrom:
-        #   - secretRef:
-        #       name: django-k8s-env
+        image: docker.io/burakovali/django-k8s:main
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "1"
+          limits:
+            memory: "256Mi"
+            cpu: "1"
+        envFrom:
+          - secretRef:
+              name: django-k8s-env
         env:
           - name: POSTGRES_USER
             valueFrom:
@@ -40,7 +40,6 @@ spec:
                 key: password
           - name: POSTGRES_HOST
             value: postgres-service
-
           - name: PORT
             value: "8001"
         ports:
