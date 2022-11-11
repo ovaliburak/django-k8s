@@ -16,16 +16,16 @@ spec:
       containers:
         - name: postgres-container
           image: postgres
-          # resources:
-          #   requests:
-          #     memory: "64Mi"
-          #     cpu: "1"
-          #   limits:
-          #     memory: "128Mi"
-          #     cpu: "1"
-          # envFrom:
-          #   - secretRef:
-          #       name: django-k8s-env            
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "1"
+            limits:
+              memory: "128Mi"
+              cpu: "1"
+          envFrom:
+            - secretRef:
+                name: django-k8s-env            
           env:
             - name: POSTGRES_USER
               valueFrom:

@@ -70,63 +70,45 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django_k8s.wsgi.application'
 
-
 # Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+# DECLARE DATABASE VARIABLES 
+DB_USERNAME = os.getenv("POSTGRES_USER")
+DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+DB_DATABASE = os.getenv("POSTGRES_DB", "kubernetes_django")
+DB_HOST = os.getenv("POSTGRES_HOST")
+DB_PORT = os.getenv("POSTGRES_PORT")
+DB_IS_AVAILABLE = all([
+    DB_USERNAME,
+    DB_PASSWORD,
+    DB_DATABASE,
+    DB_HOST,
+    DB_PORT
+])
+POSTGRES_READY=str(os.getenv("POSTGRES_READY")) == '1'
+
+if DB_IS_AVAILABLE:
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': DB_DATABASE,
+        'USER': DB_USERNAME,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
+    }
+}
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-#DECLARE DATABASE VARIABLES 
-# DB_USERNAME = os.environ.get("POSTGRES_USER")
-# DB_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
-# DB_DATABASE = os.environ.get("POSTGRES_DB")
-# DB_HOST = os.environ.get("POSTGRES_HOST")
-# DB_PORT = os.environ.get("POSTGRES_PORT")
-# DB_IS_AVAILABLE = all([
-#     DB_USERNAME,
-#     DB_PASSWORD,
-#     # DB_DATABASE,
-#     DB_HOST,
-#     DB_PORT
-# ])
-# POSTGRES_READY=str(os.environ.get("POSTGRES_READY")) == '1'
-
-# DB_IGNORE_SSL=os.environ.get('DB_IGNORE_SSL') == "true"
-
-# if DB_IS_AVAILABLE:
-#     DATABASES = {
-#     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'kubernetes_django',
-#         'USER': DB_USERNAME,
-#         'PASSWORD': DB_PASSWORD,
-#         'HOST': DB_HOST,
-#         'PORT': DB_PORT,
-#     }
+#         'USER': os.getenv('POSTGRES_USER'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+#         'HOST': os.getenv('POSTGRES_HOST'),
+#         'PORT': os.getenv('POSTGRES_PORT', 5432)     }
 # }
 
-    # if not DB_IGNORE_SSL:
-    #     DATABASES["default"]["OPTIONS"]= {
-    #         "sslmode":"required"
-    #     }
-
 # Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'kubernetes_django',
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('POSTGRES_HOST'),
-        'PORT': os.getenv('POSTGRES_PORT', 5432)     }
-}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
